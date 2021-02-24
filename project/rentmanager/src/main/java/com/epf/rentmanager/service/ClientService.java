@@ -35,7 +35,15 @@ public class ClientService {
 			throw new ServiceException(e.getMessage());
 		}
 	}
-
+	
+	public long delete(int id) throws ServiceException {
+		try {
+			return clientDao.delete(id);
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
+	}
+	
 	public Client findById(long id) throws ServiceException {
 		try {
 			return clientDao.findById(id).get();

@@ -11,11 +11,11 @@ import com.epf.rentmanager.dao.VehicleDao;
 
 public class VehicleService {
 
-	private VehicleDao VehicleDao;
+	private VehicleDao vehicleDao;
 	public static VehicleService instance;
 	
 	private VehicleService() {
-		this.VehicleDao = VehicleDao.getInstance();
+		this.vehicleDao = VehicleDao.getInstance();
 	}
 	
 	public static VehicleService getInstance() {
@@ -29,15 +29,23 @@ public class VehicleService {
 		try {
 			if (vehicle.getConstructeur().isBlank() || vehicle.getNbPlaces() >= 1)
 				throw new ServiceException("Constructeur vide / nb de places inférieur à 1");
-			return VehicleDao.create(vehicle);
+			return vehicleDao.create(vehicle);
 		} catch (ServiceException | DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
+	}
+	
+	public long delete(int id) throws ServiceException {
+		try {
+			return vehicleDao.delete(id);
+		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
 	}
 
 	public Vehicle findById(long id) throws ServiceException {
 		try {
-			return VehicleDao.findById(id).get();
+			return vehicleDao.findById(id).get();
 		} catch (RuntimeException | DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
@@ -45,7 +53,7 @@ public class VehicleService {
 
 	public List<Vehicle> findAll() throws ServiceException {
 		try {
-			return VehicleDao.findAll();
+			return vehicleDao.findAll();
 		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
