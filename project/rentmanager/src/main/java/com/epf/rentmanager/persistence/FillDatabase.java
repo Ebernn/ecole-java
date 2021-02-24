@@ -9,8 +9,6 @@ import java.util.List;
 
 import org.h2.tools.DeleteDbFiles;
 
-import com.epf.rentmanager.persistence.ConnectionManager;
-
 public class FillDatabase {
 
 

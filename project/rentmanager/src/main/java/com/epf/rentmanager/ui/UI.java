@@ -1,10 +1,6 @@
 package com.epf.rentmanager.ui;
 
-import java.util.List;
-
 import com.epf.rentmanager.exception.ServiceException;
-import com.epf.rentmanager.model.Client;
-import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.ui.cli.CLI;
 
 public class UI {
