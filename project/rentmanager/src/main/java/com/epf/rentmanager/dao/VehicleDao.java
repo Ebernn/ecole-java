@@ -83,9 +83,12 @@ public class VehicleDao {
 	}
 	
 	private Vehicle instanceFromResult(ResultSet resultSet) throws SQLException {
-		Vehicle vehicle = new Vehicle();
-		vehicle.setConstructeur(resultSet.getString("constructeur"));
-		vehicle.setNbPlaces(resultSet.getInt("nb_places"));
+		Vehicle vehicle = new Vehicle(
+			resultSet.getLong("id"),
+			resultSet.getString("constructeur"),
+			resultSet.getString("modele"),
+			resultSet.getInt("nb_places")
+		);
  	    return vehicle;
 	}
 
