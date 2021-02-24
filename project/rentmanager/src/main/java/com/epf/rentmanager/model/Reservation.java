@@ -13,6 +13,13 @@ public class Reservation {
 		
 	}
 	
+	public Reservation(long clientId, long vehicleId, Date debut, Date fin) {
+		this.clientId = clientId;
+		this.vehicleId = vehicleId;
+		this.debut = debut;
+		this.fin = fin;
+	}
+	
 	public Reservation(long id, long clientId, long vehicleId, Date debut, Date fin) {
 		this.id = id;
 		this.clientId = clientId;
