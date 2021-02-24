@@ -40,12 +40,12 @@ public class VehicleDao {
 		}
 	}
 
-	public long delete(Vehicle vehicle) throws DaoException {
+	public long delete(long id) throws DaoException {
 		try (
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(DELETE_VEHICLE_QUERY);
 		) {
-			preparedStatement.setLong(1, vehicle.getId());
+			preparedStatement.setLong(1, id);
 			return preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());

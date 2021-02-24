@@ -43,12 +43,12 @@ public class ReservationDao {
 		}
 	}
 	
-	public long delete(Reservation reservation) throws DaoException {
+	public long delete(long id) throws DaoException {
 		try (
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(DELETE_RESERVATION_QUERY);
 		) {
-			preparedStatement.setLong(1, reservation.getId());
+			preparedStatement.setLong(1, id);
 			return preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());
