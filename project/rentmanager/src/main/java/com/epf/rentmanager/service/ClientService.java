@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
+import com.epf.rentmanager.utils.FormatChecker;
 import com.epf.rentmanager.dao.ClientDao;
 
 public class ClientService {
@@ -29,6 +30,8 @@ public class ClientService {
 		try {
 			if (client.getNom().isBlank() || client.getPrenom().isBlank())
 				throw new ServiceException("Nom / prénom vide");
+			if (!FormatChecker.isValidEmailAddress(client.getEmail()))
+				throw new ServiceException("Format d'email invalide");
 			client.setNom(client.getNom().toUpperCase());
 			return clientDao.create(client);
 		} catch (ServiceException | DaoException e) {
