@@ -65,11 +65,29 @@ public class CLI {
 			e.printStackTrace();
 		}
 	}
+	
 	public static void supprClient() {
-		
+		IOUtils.print(" 🛠 Suppression d'un client...\nVeuillez remplir les champs ci-dessous\n");
+		int id = IOUtils.readInt("Identifiant:");
+		try {
+			ClientService.getInstance().delete(id);
+			IOUtils.print(" ✔️ Opération réussie");
+		} catch (ServiceException e) {
+			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
+			e.printStackTrace();
+		}
 	}
+	
 	public static void supprVehicle() {
-		
+		IOUtils.print(" 🛠 Suppression d'un véhicule...\nVeuillez remplir les champs ci-dessous\n");
+		int id = IOUtils.readInt("Identifiant:");
+		try {
+			VehicleService.getInstance().delete(id);
+			IOUtils.print(" ✔️ Opération réussie");
+		} catch (ServiceException e) {
+			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -20,5 +20,8 @@ public class UI {
              System.out.println(client);
         }*/
 		CLI.createVehicle();
+		CLI.getVehicles();
+		CLI.supprVehicle();
+		CLI.getVehicles();
     }
 }
