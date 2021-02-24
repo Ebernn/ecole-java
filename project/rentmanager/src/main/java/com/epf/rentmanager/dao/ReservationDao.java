@@ -1,6 +1,7 @@
 package com.epf.rentmanager.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,8 +35,8 @@ public class ReservationDao {
 			PreparedStatement preparedStatement = connection.prepareStatement(CREATE_RESERVATION_QUERY);
 			preparedStatement.setLong(1, reservation.getClientId());
 			preparedStatement.setLong(2, reservation.getVehicleId());		
-			preparedStatement.setDate(3, reservation.getDebut());
-			preparedStatement.setDate(4, reservation.getFin());
+			preparedStatement.setDate(3, Date.valueOf(reservation.getDebut()));
+			preparedStatement.setDate(4, Date.valueOf(reservation.getFin()));
 			return preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());
@@ -107,8 +108,8 @@ public class ReservationDao {
 			resultSet.getLong("id"),
 			resultSet.getLong("client_id"),
 			resultSet.getLong("vehicle_id"),
-			resultSet.getDate("debut"),
-			resultSet.getDate("fin")
+			resultSet.getDate("debut").toLocalDate(),
+			resultSet.getDate("fin").toLocalDate()
 		);
 	}
 

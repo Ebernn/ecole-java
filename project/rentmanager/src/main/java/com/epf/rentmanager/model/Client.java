@@ -1,26 +1,26 @@
 package com.epf.rentmanager.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Client {
-	private int id;
+	private long id;
 	private String nom;
 	private String prenom;
 	private String email;
-	private Date naissance;
+	private LocalDate naissance;
 	
 	public Client() {
 
 	}
 	
-	public Client(String nom, String prenom, String email, Date naissance) {
+	public Client(String nom, String prenom, String email, LocalDate naissance) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.email = email;
 		this.naissance = naissance;
 	}
 	
-	public Client(int id, String nom, String prenom, String email, Date naissance) {
+	public Client(long id, String nom, String prenom, String email, LocalDate naissance) {
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -33,7 +33,7 @@ public class Client {
 		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", naissance=" + naissance + "]";
 	}
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 	
@@ -49,11 +49,11 @@ public class Client {
 		return email;
 	}
 	
-	public Date getNaissance() {
+	public LocalDate getNaissance() {
 		return naissance;
 	}
 	
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
@@ -69,7 +69,8 @@ public class Client {
 		this.email = email;
 	}
 	
-	public void setNaissance(Date naissance) {
+	public void setNaissance(LocalDate naissance) {
 		this.naissance = naissance;
 	}
+
 }

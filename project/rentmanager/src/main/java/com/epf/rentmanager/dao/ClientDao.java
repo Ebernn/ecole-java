@@ -1,6 +1,7 @@
 package com.epf.rentmanager.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ public class ClientDao {
 			preparedStatement.setString(1, client.getNom());
 			preparedStatement.setString(2, client.getPrenom());
 			preparedStatement.setString(3, client.getEmail());
-			preparedStatement.setDate(4, client.getNaissance());			
+			preparedStatement.setDate(4, Date.valueOf(client.getNaissance()));			
 			return preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());
@@ -85,11 +86,11 @@ public class ClientDao {
 	
 	private Client instanceFromResult(ResultSet resultSet) throws SQLException {
 		return new Client(
-			resultSet.getInt("id"),
+			resultSet.getLong("id"),
 			resultSet.getString("nom"),
 			resultSet.getString("prenom"),
 			resultSet.getString("email"),
-			resultSet.getDate("naissance")
+			resultSet.getDate("naissance").toLocalDate()
 		);
 	}
 
