@@ -25,8 +25,8 @@ public class ReservationDao {
 	
 	private static final String CREATE_RESERVATION_QUERY = "INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(?, ?, ?, ?);";
 	private static final String DELETE_RESERVATION_QUERY = "DELETE FROM Reservation WHERE id=?;";
-	private static final String FIND_RESERVATIONS_BY_CLIENT_QUERY = "SELECT id, vehicle_id, debut, fin FROM Reservation WHERE client_id=?;";
-	private static final String FIND_RESERVATIONS_BY_VEHICLE_QUERY = "SELECT id, client_id, debut, fin FROM Reservation WHERE vehicle_id=?;";
+	private static final String FIND_RESERVATIONS_BY_CLIENT_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation WHERE client_id=?;";
+	private static final String FIND_RESERVATIONS_BY_VEHICLE_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation WHERE vehicle_id=?;";
 	private static final String FIND_RESERVATIONS_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation;";
 		
 	public long create(Reservation reservation) throws DaoException {
@@ -37,7 +37,10 @@ public class ReservationDao {
 			preparedStatement.setLong(2, reservation.getVehicleId());		
 			preparedStatement.setDate(3, Date.valueOf(reservation.getDebut()));
 			preparedStatement.setDate(4, Date.valueOf(reservation.getFin()));
-			return preparedStatement.executeUpdate();
+			long id = preparedStatement.executeUpdate();
+			preparedStatement.close();
+			connection.close();
+			return id;
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());
 		}
@@ -58,14 +61,15 @@ public class ReservationDao {
 	
 	public List<Reservation> findResaByClientId(long clientId) throws DaoException {
 		List<Reservation> reservations = new ArrayList<Reservation>();
-		try (
+		try {
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(FIND_RESERVATIONS_BY_CLIENT_QUERY);
-			ResultSet resultSet = preparedStatement.executeQuery();
-		) {
 			preparedStatement.setLong(1, clientId);
+			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next())
 				reservations.add(instanceFromResult(resultSet));
+			preparedStatement.close();
+			connection.close();
 		} catch (SQLException e) {
 			throw new DaoException(e.getMessage());
 		}		 
@@ -74,14 +78,15 @@ public class ReservationDao {
 	
 	public List<Reservation> findResaByVehicleId(long vehicleId) throws DaoException {
 		List<Reservation> reservations = new ArrayList<Reservation>();
-		try (
+		try {
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(FIND_RESERVATIONS_BY_VEHICLE_QUERY);
-			ResultSet resultSet = preparedStatement.executeQuery();
-		) {
 			preparedStatement.setLong(1, vehicleId);
+			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next())
 				reservations.add(instanceFromResult(resultSet));
+			preparedStatement.close();
+			connection.close();
 		} catch (SQLException e) {
 			throw new DaoException(e.getMessage());
 		}		 

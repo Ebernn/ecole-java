@@ -36,7 +36,10 @@ public class ClientDao {
 			preparedStatement.setString(2, client.getPrenom());
 			preparedStatement.setString(3, client.getEmail());
 			preparedStatement.setDate(4, Date.valueOf(client.getNaissance()));			
-			return preparedStatement.executeUpdate();
+			long id = preparedStatement.executeUpdate();
+			preparedStatement.close();
+			connection.close();
+			return id;
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());
 		}

@@ -5,8 +5,10 @@ import java.util.ListIterator;
 
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
+import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ClientService;
+import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
 import com.epf.rentmanager.utils.IOUtils;
 
@@ -66,6 +68,62 @@ public class CLI {
 		}
 	}
 	
+	public static void createReservation() {
+		IOUtils.print(" 🛠 Creation d'une nouvelle réservation...\nVeuillez remplir les champs ci-dessous\n");
+		int clientId = IOUtils.readInt("Identifiant du client:");
+		int vehicleId = IOUtils.readInt("Identifiant du véhicule:");
+		LocalDate debut = IOUtils.readDate("Date de début:", true);
+		LocalDate fin = IOUtils.readDate("Date de fin:", true);
+		try {
+			ReservationService.getInstance().create(new Reservation(clientId, vehicleId, debut, fin));
+			IOUtils.print(" ✔️ Opération réussie");
+		} catch (ServiceException e) {
+			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void getReservations() {
+		IOUtils.print(" 🛠 Récupération de la liste des réservations...");
+		try {
+			ListIterator<Reservation> reservations = ReservationService.getInstance().findAll().listIterator();
+			while(reservations.hasNext())
+				IOUtils.print(reservations.next().toString());
+			IOUtils.print(" ✔️ Opération réussie");
+		} catch (ServiceException e) {
+			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void getReservationsByClient() {
+		IOUtils.print(" 🛠 Récupération de la liste des réservations associées à un client...\nVeuillez remplir les champs ci-dessous\n");
+		long clientId = IOUtils.readInt("Identifiant du client:");
+		try {
+			ListIterator<Reservation> reservations = ReservationService.getInstance().findByClient(clientId).listIterator();
+			while(reservations.hasNext())
+				IOUtils.print(reservations.next().toString());
+			IOUtils.print(" ✔️ Opération réussie");
+		} catch (ServiceException e) {
+			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void getReservationsByVehicle() {
+		IOUtils.print(" 🛠 Récupération de la liste des réservations associées à un véhicule...\nVeuillez remplir les champs ci-dessous\n");
+		long vehicleId = IOUtils.readInt("Identifiant du véhicule:");
+		try {
+			ListIterator<Reservation> reservations = ReservationService.getInstance().findByVehicle(vehicleId).listIterator();
+			while(reservations.hasNext())
+				IOUtils.print(reservations.next().toString());
+			IOUtils.print(" ✔️ Opération réussie");
+		} catch (ServiceException e) {
+			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	public static void supprClient() {
 		IOUtils.print(" 🛠 Suppression d'un client...\nVeuillez remplir les champs ci-dessous\n");
 		int id = IOUtils.readInt("Identifiant:");
@@ -83,6 +141,18 @@ public class CLI {
 		int id = IOUtils.readInt("Identifiant:");
 		try {
 			VehicleService.getInstance().delete(id);
+			IOUtils.print(" ✔️ Opération réussie");
+		} catch (ServiceException e) {
+			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void supprReservation() {
+		IOUtils.print(" 🛠 Suppression d'une réservation...\nVeuillez remplir les champs ci-dessous\n");
+		int id = IOUtils.readInt("Identifiant:");
+		try {
+			ReservationService.getInstance().delete(id);
 			IOUtils.print(" ✔️ Opération réussie");
 		} catch (ServiceException e) {
 			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());

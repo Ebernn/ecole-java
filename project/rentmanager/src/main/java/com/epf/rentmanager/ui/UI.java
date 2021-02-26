@@ -15,9 +15,29 @@ public class UI {
         for (Client client : clients){
              System.out.println(client);
         }*/
-		CLI.createVehicle();
+		
+		// CLI.createVehicle();
+		// CLI.getVehicles();
+		
+		// CLI.supprVehicle();
+		// CLI.getVehicles();
+		
+		// CLI.createClient();
+		// CLI.getClients();
+		
+		// CLI.supprClient();
+		// CLI.getClients();
+		
+		CLI.getClients();
 		CLI.getVehicles();
-		CLI.supprVehicle();
-		CLI.getVehicles();
+		
+		CLI.createReservation();
+		CLI.getReservations();
+		
+		CLI.createReservation();
+		CLI.getReservations();
+		
+		CLI.getReservationsByClient();
+		CLI.getReservationsByVehicle();
     }
 }
