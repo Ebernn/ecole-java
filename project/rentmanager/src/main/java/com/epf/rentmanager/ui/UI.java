@@ -15,9 +15,9 @@ public class UI {
         for (Client client : clients){
              System.out.println(client);
         }*/
-		CLI.createVehicle();
+		// CLI.createVehicle();
 		CLI.getVehicles();
-		CLI.supprVehicle();
-		CLI.getVehicles();
+		// CLI.supprVehicle();
+		CLI.getClients();
     }
 }
