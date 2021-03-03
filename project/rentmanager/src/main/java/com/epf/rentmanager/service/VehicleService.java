@@ -5,6 +5,7 @@ import java.util.List;
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Vehicle;
+import com.epf.rentmanager.utils.FormatChecker;
 import com.epf.rentmanager.dao.VehicleDao;
 
 public class VehicleService {
@@ -25,8 +26,10 @@ public class VehicleService {
 	
 	public long create(Vehicle vehicle) throws ServiceException {
 		try {
-			if (vehicle.getConstructeur().isBlank() || vehicle.getNbPlaces() < 1)
-				throw new ServiceException("Constructeur vide / nb de places inférieur à 1");
+			if (FormatChecker.isBlank(vehicle.getConstructeur()))
+				throw new ServiceException("Le constructeur est vide");
+			if(vehicle.getNb_places() < 1)
+				throw new ServiceException("Le nombre de places du véhicule est inférieur à 1");
 			return vehicleDao.create(vehicle);
 		} catch (ServiceException | DaoException e) {
 			throw new ServiceException(e.getMessage());

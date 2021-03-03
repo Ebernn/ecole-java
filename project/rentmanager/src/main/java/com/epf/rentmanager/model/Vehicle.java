@@ -40,7 +40,7 @@ public class Vehicle {
 		return modele;
 	}
 	
-	public int getNbPlaces() {
+	public int getNb_places() {
 		return nb_places;
 	}
 	
@@ -56,7 +56,7 @@ public class Vehicle {
 		this.modele = modele;
 	}
 	
-	public void setNbPlaces(int nb_places) {
+	public void setNb_places(int nb_places) {
 		this.nb_places = nb_places;
 	}
 

@@ -34,7 +34,7 @@ public class VehicleDao {
 			PreparedStatement preparedStatement = connection.prepareStatement(CREATE_VEHICLE_QUERY);
 			preparedStatement.setString(1, vehicle.getConstructeur());
 			preparedStatement.setString(2, vehicle.getModele());
-			preparedStatement.setLong(3, vehicle.getNbPlaces());
+			preparedStatement.setLong(3, vehicle.getNb_places());
 			long id = preparedStatement.executeUpdate();
 			preparedStatement.close();
 			connection.close();

@@ -20,4 +20,15 @@ public class FormatChecker {
 		}
 		return result;
 	}
+
+	/**
+	 * Vérifie si le contenu d'une chaîne de caractères est vide (utile lorsque JDK < 11)
+	 * https://stackoverflow.com/a/57130572/5838789
+	 * @param input
+	 * @return
+	 */
+	public static boolean isBlank(String input) {
+		return input == null || input.trim().length() == 0;
+	}
+
 }

@@ -26,7 +26,7 @@ public class ClientService {
 	
 	public long create(Client client) throws ServiceException {
 		try {
-			if (client.getNom().isBlank() || client.getPrenom().isBlank())
+			if (FormatChecker.isBlank(client.getNom()) || FormatChecker.isBlank(client.getPrenom()))
 				throw new ServiceException("Nom / prénom vide");
 			if (!FormatChecker.isValidEmailAddress(client.getEmail()))
 				throw new ServiceException("Format d'email invalide");
