@@ -49,7 +49,7 @@
                                         <a class="btn btn-success" href="./cars/edit?id=${vehicle.id}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger" href="./cars/remove?id=${vehicle.id}">
+                                        <a class="btn btn-danger" href="./cars/delete?id=${vehicle.id}">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>

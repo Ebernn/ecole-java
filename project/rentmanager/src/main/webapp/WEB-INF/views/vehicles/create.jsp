@@ -23,6 +23,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- Horizontal Form -->
+                    <h4>Cr&eacute;ation d'un v&eacute;hicule</h4>
                     <div class="box">
                         <!-- form start -->
                         <!-- Le  type de methode http qui sera appel� lors de action submit du formulaire -->
