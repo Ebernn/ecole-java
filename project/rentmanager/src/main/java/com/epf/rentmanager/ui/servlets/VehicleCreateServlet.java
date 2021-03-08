@@ -10,26 +10,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.epf.rentmanager.exception.ServiceException;
+import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.VehicleService;
 
-@WebServlet("/cars")
+@WebServlet("/cars/create")
 public class VehicleCreateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			System.out.println(VehicleService.getInstance().findAll());
-		} catch (ServiceException e1) {
-			e1.printStackTrace();
-		}
 		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp");
-		try {
-			request.setAttribute("vehicles", VehicleService.getInstance().findAll());
-		} catch (final Exception e) {
-			System.out.println(e.getMessage());
-		}
 		dispatcher.forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+		System.out.println(request.getAttributeNames());
+		System.out.println(request.getParameter("manufacturer"));
+		System.out.println(request.getParameter("modele"));
+		System.out.println(request.getParameter("seats"));
+		try {
+			VehicleService.getInstance().create(new Vehicle(
+				request.getParameter("manufacturer").toString(),
+				request.getParameter("modele").toString(),
+				Integer.parseInt(request.getParameter("seats").toString())
+			));
+		} catch (ServiceException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }

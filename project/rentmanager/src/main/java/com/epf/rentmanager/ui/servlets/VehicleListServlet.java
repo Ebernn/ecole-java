@@ -15,11 +15,6 @@ import com.epf.rentmanager.service.VehicleService;
 @WebServlet("/cars")
 public class VehicleListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			System.out.println(VehicleService.getInstance().findAll());
-		} catch (ServiceException e1) {
-			e1.printStackTrace();
-		}
 		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/list.jsp");
 		try {
 			request.setAttribute("vehicles", VehicleService.getInstance().findAll());
