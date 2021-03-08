@@ -36,6 +36,18 @@ public class VehicleService {
 		}
 	}
 	
+	public long update(Vehicle vehicle) throws ServiceException {
+		try {
+			if (FormatChecker.isBlank(vehicle.getConstructeur()))
+				throw new ServiceException("Le constructeur est vide");
+			if(vehicle.getNb_places() < 1)
+				throw new ServiceException("Le nombre de places du véhicule est inférieur à 1");
+			return vehicleDao.update(vehicle);
+		} catch (ServiceException | DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
+	}
+	
 	public long delete(int id) throws ServiceException {
 		try {
 			return vehicleDao.delete(id);
