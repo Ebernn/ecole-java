@@ -22,10 +22,6 @@ public class VehicleCreateServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-		System.out.println(request.getAttributeNames());
-		System.out.println(request.getParameter("manufacturer"));
-		System.out.println(request.getParameter("modele"));
-		System.out.println(request.getParameter("seats"));
 		try {
 			VehicleService.getInstance().create(new Vehicle(
 				request.getParameter("manufacturer").toString(),
