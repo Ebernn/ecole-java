@@ -26,7 +26,6 @@ public class VehicleEditServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 		try {
 			VehicleService.getInstance().update(new Vehicle(
 				Integer.parseInt(request.getParameter("id").toString()),
@@ -38,5 +37,6 @@ public class VehicleEditServlet extends HttpServlet {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		response.sendRedirect("../cars");
 	}
 }

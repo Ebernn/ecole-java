@@ -25,7 +25,6 @@ public class VehicleDeleteServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 		try {
 			if (request.getParameter("confirm") != null)
 				VehicleService.getInstance().delete(Integer.parseInt(request.getParameter("id").toString()));
@@ -33,5 +32,6 @@ public class VehicleDeleteServlet extends HttpServlet {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		response.sendRedirect("../cars");
 	}
 }

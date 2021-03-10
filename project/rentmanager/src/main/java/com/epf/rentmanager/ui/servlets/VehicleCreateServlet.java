@@ -21,7 +21,6 @@ public class VehicleCreateServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 		try {
 			VehicleService.getInstance().create(new Vehicle(
 				request.getParameter("manufacturer").toString(),
@@ -32,5 +31,6 @@ public class VehicleCreateServlet extends HttpServlet {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		response.sendRedirect("../cars");
 	}
 }

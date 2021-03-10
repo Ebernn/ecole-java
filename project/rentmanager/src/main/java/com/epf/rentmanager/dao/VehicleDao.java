@@ -5,12 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 import com.epf.rentmanager.exception.DaoException;
+import com.epf.rentmanager.exception.ServiceException;
+import com.epf.rentmanager.model.Reservation;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.persistence.ConnectionManager;
+import com.epf.rentmanager.service.ReservationService;
 
 public class VehicleDao {
 	
@@ -67,9 +71,11 @@ public class VehicleDao {
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(DELETE_VEHICLE_QUERY);
 		) {
+			Iterator<Reservation> reservations = ReservationService.getInstance().findByVehicle(id).iterator();
+			while(reservations.hasNext()) ReservationService.getInstance().delete((int) reservations.next().getId());
 			preparedStatement.setLong(1, id);
 			return preparedStatement.executeUpdate();
-		} catch (SQLException e) {
+		} catch (SQLException | ServiceException e) {
 			 throw new DaoException(e.getMessage());
 		}
 	}
