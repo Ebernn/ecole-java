@@ -50,7 +50,13 @@ public class FillDatabase {
             stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('Morin', 'Sabrina', 'sabrina.morin@email.com', '1988-01-22')");
             stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('Afleck', 'Steeve', 'steeve.afleck@email.com', '1988-01-22')");
             stmt.execute("INSERT INTO Client(nom, prenom, email, naissance) VALUES('Rousseau', 'Jacques', 'jacques.rousseau@email.com', '1988-01-22')");
-                    
+            
+            stmt.execute("INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(1, 1, '2008-01-22', '2018-01-22')");
+            stmt.execute("INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(1, 2, '2008-01-22', '2018-01-22')");
+            stmt.execute("INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(2, 3, '2008-01-22', '2018-01-22')");
+            stmt.execute("INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(3, 3, '2008-01-22', '2018-01-22')");
+            stmt.execute("INSERT INTO Reservation(client_id, vehicle_id, debut, fin) VALUES(4, 4, '2008-01-22', '2018-01-22')");
+            
             connection.commit();
             System.out.println("Success!");
         } catch (SQLException e) {

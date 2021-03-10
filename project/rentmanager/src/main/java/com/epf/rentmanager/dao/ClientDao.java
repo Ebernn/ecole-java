@@ -27,6 +27,7 @@ public class ClientDao {
 	private static final String DELETE_CLIENT_QUERY = "DELETE FROM Client WHERE id=?;";
 	private static final String FIND_CLIENT_QUERY = "SELECT nom, prenom, email, naissance FROM Client WHERE id=?;";
 	private static final String FIND_CLIENTS_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client;";
+	private static final String FIND_CLIENTS_BY_VEHICLE = "SELECT * FROM Client INNER JOIN Reservation ON Reservation.client_id=Client.id WHERE Reservation.vehicle_id=?;";
 	
 	public long create(Client client) throws DaoException {
 		try {
@@ -70,6 +71,22 @@ public class ClientDao {
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());
 		}
+	}
+	
+	public List<Client> findByVehicleId(long vehicle_id) throws DaoException {
+		List<Client> clients = new ArrayList<Client>();
+		try (
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(FIND_CLIENTS_BY_VEHICLE);
+		) {
+			preparedStatement.setLong(1, vehicle_id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next())
+				clients.add(instanceFromResult(resultSet));
+		} catch (SQLException e) {
+			 throw new DaoException(e.getMessage());
+		}
+		return clients;
 	}
 
 	public List<Client> findAll() throws DaoException {

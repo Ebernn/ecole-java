@@ -11,62 +11,124 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
+   		<!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
                 Voitures
             </h1>
         </section>
-
+        
         <!-- Main content -->
         <section class="content">
+	<h4>D&eacute;tails du v&eacute;hicule</h4>
             <div class="row">
-                <div class="col-md-12">
-                    <!-- Horizontal Form -->
-                    <span>
-	                    <h4>R&eacute;servations associ&eacute;s au v&eacute;hicule</h4>
-	                    <c:forEach items="${reservations}" var="reservation">
-	                    	<tr>
-	                            <td>${reservation.id}</td>
-	                            <td>${reservation.clientId}</td>
-	                            <td>${reservation.vehicleId}</td>
-	                            <td>${reservation.debut}</td>
-	                            <td>${reservation.fin}</td>
-	                        </tr>
-	                    </c:forEach>
-                    </span>
-                    <h4>D&eacute;tails d'un v&eacute;hicule</h4>
-                    <div class="box">
-                        <table class="table table-striped">
-						    <thead>
-						        <tr>
-						            <th colspan="2">R&eacute;sum&eacute; du v&eacute;hicule</th>
-						        </tr>
-						    </thead>
-						    <tbody>
-						        <tr>
-						            <td>Identifiant</td>
-						            <td>${vehicle.id}</td>
-						        </tr>
-						      	<tr>
-						            <td>Constructeur</td>
-						            <td>${vehicle.constructeur}</td>
-						        </tr>
-						        <tr>
-						            <td>Mod&egrave;le</td>
-						            <td>${vehicle.modele}</td>
-						        </tr>
-						        <tr>
-						            <td>Nombre de places</td>
-						        	<td>${vehicle.nb_places}</td>
-							    </tr>
-							 </tbody>
-						</table>
+                <div class="col-md-3">
+
+                    <!-- Profile Image -->
+                    <div class="box box-primary">
+                        <div class="box-body box-profile">
+                        	<table class="table table-striped">
+							    <thead>
+							        <tr>
+							            <th colspan="2">R&eacute;sum&eacute; du v&eacute;hicule</th>
+							        </tr>
+							    </thead>
+							    <tbody>
+							        <tr>
+							            <td>Identifiant</td>
+							            <td>${vehicle.id}</td>
+							        </tr>
+							      	<tr>
+							            <td>Constructeur</td>
+							            <td>${vehicle.constructeur}</td>
+							        </tr>
+							        <tr>
+							            <td>Mod&egrave;le</td>
+							            <td>${vehicle.modele}</td>
+							        </tr>
+							        <tr>
+							            <td>Nombre de places</td>
+							        	<td>${vehicle.nb_places}</td>
+								     </tr>
+								 </tbody>
+							</table>
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item">
+                                    <b>Utilisateur(s)</b> <a class="pull-right">${countr}</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Reservation(s)</b> <a class="pull-right">${countu}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>
                 <!-- /.col -->
+                <div class="col-md-9">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#users" data-toggle="tab">Utilisateur(s)</a></li>
+                            <li><a href="#rents" data-toggle="tab">Reservation(s)</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="users">
+                                <div class="box-body no-padding">
+                                    <table class="table table-striped">
+                                    	<tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Nom</th>
+                                            <th>Prenom</th>
+                                            <th>Email</th>
+                                            <th>Naissance</th>
+                                        </tr>
+	                                    <tr>
+	
+		                                <c:forEach items="${users}" var="user">
+		                                    <td>${user.id}.</td>
+		                                    <td>${user.nom}</td>
+		                                    <td>${user.prenom}</td>
+		                                    <td>${user.email}</td>
+		                                    <td>${user.naissance}</td>
+		                                </tr>
+		                                </c:forEach>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="rents">
+                                <!-- /.box-header -->
+                                <div class="box-body no-padding">
+                                    <table class="table table-striped">
+                                       	<tr>
+                                            <th style="width: 10px">#</th>
+                                            <th>Identifiant client</th>
+                                            <th>Debut</th>
+                                            <th>Fin</th>
+                                        </tr>
+	                                    <tr>
+	
+		                                <c:forEach items="${reservations}" var="reservation">
+		                                    <td>${reservation.id}.</td>
+		                                    <td>${reservation.clientId}</td>
+		                                    <td>${reservation.debut}</td>
+		                                    <td>${reservation.fin}</td>
+		                                </tr>
+		                                </c:forEach>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div>
+                    <!-- /.nav-tabs-custom -->
+                </div>
+                <!-- /.col -->
             </div>
+            <!-- /.row -->
+
         </section>
         <!-- /.content -->
     </div>
