@@ -1,4 +1,4 @@
-package com.epf.rentmanager.ui.servlets;
+package com.epf.rentmanager.ui.servlets.vehicle;
 
 import java.io.IOException;
 
@@ -10,23 +10,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.epf.rentmanager.exception.ServiceException;
-import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.VehicleService;
 
-@WebServlet("/cars/create")
-public class VehicleCreateServlet extends HttpServlet {
+@WebServlet("/cars/delete")
+public class VehicleDeleteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp");
+		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/delete.jsp");
+		try {
+			request.setAttribute("vehicle", VehicleService.getInstance().findById(Integer.parseInt(request.getParameter("id"))));
+		} catch (final Exception e) {
+			System.out.println(e.getMessage());
+		}
 		dispatcher.forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			VehicleService.getInstance().create(new Vehicle(
-				request.getParameter("manufacturer").toString(),
-				request.getParameter("modele").toString(),
-				Integer.parseInt(request.getParameter("seats").toString())
-			));
+			if (request.getParameter("confirm") != null)
+				VehicleService.getInstance().delete(Integer.parseInt(request.getParameter("id").toString()));
 		} catch (ServiceException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
