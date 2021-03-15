@@ -21,7 +21,7 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="row">
+           <div class="row">
                 <div class="col-md-12">
                     <div class="box">
                         <div class="box-body no-padding">
@@ -37,6 +37,25 @@
                                 <tr>
 
                                 <c:forEach items="${vehicles}" var="vehicle">
+                                
+									<!-- Modal -->
+									<div class="modal fade" id="supprModal${vehicle.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									  <div class="modal-dialog" role="document">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h5 class="modal-title" id="exampleModalLabel">Confirmation de suppression</h5>
+									      </div>
+									      <div class="modal-body">
+									        Es-tu sur de vouloir supprimer le vehicule ${vehicle.id}?
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									        <a class="btn btn-primary" href="./cars/delete?id=${vehicle.id}">Confirmer</a>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+									
                                     <td>${vehicle.id}.</td>
                                     <td>${vehicle.constructeur}</td>
                                     <td>${vehicle.modele}</td>
@@ -49,9 +68,12 @@
                                         <a class="btn btn-success" href="./cars/edit?id=${vehicle.id}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger" href="./cars/delete?id=${vehicle.id}">
+                                        <a class="btn btn-danger" data-toggle="modal" data-target="#supprModal${vehicle.id}">
+										  	<i class="fa fa-trash"></i>
+										</a>
+                                        <!-- <a class="btn btn-danger" href="./cars/delete?id=${vehicle.id}">
                                             <i class="fa fa-trash"></i>
-                                        </a>
+                                        </a> -->
                                     </td>
                                 </tr>
                                 </c:forEach>
