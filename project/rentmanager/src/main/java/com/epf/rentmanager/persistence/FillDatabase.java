@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.h2.tools.DeleteDbFiles;
 
+import com.epf.rentmanager.dao.VehicleDao;
+
 public class FillDatabase {
 
 
