@@ -1,6 +1,8 @@
-package com.epf.rentmanager.ui.servlets.vehicle;
+package com.epf.rentmanager.ui.servlets.reservation;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -13,24 +15,27 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
+import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.service.ClientService;
 import com.epf.rentmanager.service.ReservationService;
 import com.epf.rentmanager.service.VehicleService;
 
-@WebServlet("/cars/details")
-public class VehicleDetailsServlet extends HttpServlet {
+
+@WebServlet("/rents/create")
+public class ReservationCreateServlet extends HttpServlet {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7220114404005692057L;
+	private static final long serialVersionUID = -6400136202534318065L;
 
 	@Autowired
-	private ClientService clientService;
+	private VehicleService vehicleService;
 	
 	@Autowired
-	private VehicleService vehicleService;
+	private ClientService clientService;
 	
 	@Autowired
 	private ReservationService reservationService;
@@ -42,23 +47,32 @@ public class VehicleDetailsServlet extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/details.jsp");
+		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/rents/create.jsp");
 		try {
-			final int id = Integer.parseInt(request.getParameter("id"));
-			final List<Reservation> reservations = reservationService.findByVehicle(id);
-			final List<Client> users = clientService.findByVehicle(id);
-			request.setAttribute("vehicle", vehicleService.findById(id));
-			request.setAttribute("reservations", reservations);
+			final List<Client> users = clientService.findAll();
+			final List<Vehicle> vehicles = vehicleService.findAll();
 			request.setAttribute("users", users);
-			request.setAttribute("countr", reservations.size());
-			request.setAttribute("countu", users.size());
-		} catch (final Exception e) {
+			request.setAttribute("vehicles", vehicles);
+		} catch (ServiceException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		dispatcher.forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		try {
+			final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			reservationService.create(new Reservation(
+					Integer.parseInt(request.getParameter("client").toString()),
+					Integer.parseInt(request.getParameter("car").toString()),
+					LocalDate.parse(request.getParameter("begin").toString(), formatter),
+					LocalDate.parse(request.getParameter("end").toString(), formatter)
+			));
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		response.sendRedirect("../rents");
 	}
 }

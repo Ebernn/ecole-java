@@ -1,6 +1,8 @@
-package com.epf.rentmanager.ui.servlets.vehicle;
+package com.epf.rentmanager.ui.servlets.client;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,19 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.epf.rentmanager.exception.ServiceException;
-import com.epf.rentmanager.model.Vehicle;
-import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.model.Client;
+import com.epf.rentmanager.service.ClientService;
 
-@WebServlet("/cars/create")
-public class VehicleCreateServlet extends HttpServlet {
+@WebServlet("/users/create")
+public class ClientCreateServlet extends HttpServlet {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6948972974079594797L;
+	private static final long serialVersionUID = 211663769442029075L;
 	
 	@Autowired
-	private VehicleService vehicleService;
+	private ClientService clientService;
 	
 	@Override
 	public void init() throws ServletException {
@@ -33,21 +34,23 @@ public class VehicleCreateServlet extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/vehicles/create.jsp");
+		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/users/create.jsp");
 		dispatcher.forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			vehicleService.create(new Vehicle(
-				request.getParameter("manufacturer").toString(),
-				request.getParameter("modele").toString(),
-				Integer.parseInt(request.getParameter("seats").toString())
+			final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			clientService.create(new Client(
+					request.getParameter("last_name").toString(),
+					request.getParameter("first_name").toString(),
+					request.getParameter("email").toString(),
+					LocalDate.parse(request.getParameter("birth_date").toString(), formatter)
 			));
-		} catch (ServiceException e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		response.sendRedirect("../cars");
+		response.sendRedirect("../users");
 	}
 }

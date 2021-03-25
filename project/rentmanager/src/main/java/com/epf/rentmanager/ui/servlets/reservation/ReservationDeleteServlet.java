@@ -1,4 +1,4 @@
-package com.epf.rentmanager.ui.servlets.vehicle;
+package com.epf.rentmanager.ui.servlets.reservation;
 
 import java.io.IOException;
 
@@ -12,17 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.epf.rentmanager.exception.ServiceException;
-import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.service.ReservationService;
 
-@WebServlet("/cars/delete")
-public class VehicleDeleteServlet extends HttpServlet {
+
+@WebServlet("/rents/delete")
+public class ReservationDeleteServlet extends HttpServlet {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4325359811604254645L;
+	private static final long serialVersionUID = 4563944459899516421L;
 	
 	@Autowired
-	private VehicleService vehicleService;
+	private ReservationService reservationService;
 	
 	@Override
 	public void init() throws ServletException {
@@ -32,11 +33,11 @@ public class VehicleDeleteServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			vehicleService.delete(Integer.parseInt(request.getParameter("id").toString()));
+			reservationService.delete(Integer.parseInt(request.getParameter("id").toString()));
 		} catch (NumberFormatException | ServiceException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		response.sendRedirect("../cars");
+		response.sendRedirect("../rents");
 	}
 }

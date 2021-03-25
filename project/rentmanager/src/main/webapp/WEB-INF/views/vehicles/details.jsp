@@ -20,7 +20,7 @@
         
         <!-- Main content -->
         <section class="content">
-	<h4>D&eacute;tails du v&eacute;hicule</h4>
+		<h4>D&eacute;tails du v&eacute;hicule</h4>
             <div class="row">
                 <div class="col-md-3">
 
@@ -54,10 +54,10 @@
 							</table>
                             <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
-                                    <b>Utilisateur(s)</b> <a class="pull-right">${countr}</a>
+                                    <b>Utilisateur(s)</b> <a class="pull-right">${countu}</a>
                                 </li>
                                 <li class="list-group-item">
-                                    <b>Reservation(s)</b> <a class="pull-right">${countu}</a>
+                                    <b>Reservation(s)</b> <a class="pull-right">${countr}</a>
                                 </li>
                             </ul>
                         </div>

@@ -9,6 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Reservation;
@@ -16,16 +19,13 @@ import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.persistence.ConnectionManager;
 import com.epf.rentmanager.service.ReservationService;
 
+@Repository
 public class VehicleDao {
 	
-	private static VehicleDao instance = null;
+	@Autowired
+	private ReservationService reservationService;
+	
 	private VehicleDao() {}
-	public static VehicleDao getInstance() {
-		if(instance == null) {
-			instance = new VehicleDao();
-		}
-		return instance;
-	}
 	
 	private static final String CREATE_VEHICLE_QUERY = "INSERT INTO Vehicle(constructeur, modele, nb_places) VALUES(?, ?, ?);";
 	private static final String EDIT_VEHICLE_QUERY = "UPDATE Vehicle SET constructeur=?, modele=?, nb_places=? WHERE id=?;";
@@ -33,7 +33,8 @@ public class VehicleDao {
 	private static final String FIND_VEHICLE_QUERY = "SELECT id, constructeur, modele, nb_places FROM Vehicle WHERE id=?;";
 	private static final String FIND_VEHICLES_QUERY = "SELECT id, constructeur, modele, nb_places FROM Vehicle;";
 	private static final String COUNT_VEHICLE_QUERY = "SELECT COUNT(id) AS count FROM Vehicle";
-	
+	private static final String FIND_VEHICLES_BY_CLIENT = "SELECT * FROM Vehicle INNER JOIN Reservation ON Reservation.vehicle_id=Vehicle.id WHERE Reservation.client_id=?;";
+
 	public long create(Vehicle vehicle) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
@@ -72,8 +73,8 @@ public class VehicleDao {
 			Connection connection = ConnectionManager.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(DELETE_VEHICLE_QUERY);
 		) {
-			Iterator<Reservation> reservations = ReservationService.getInstance().findByVehicle(id).iterator();
-			while(reservations.hasNext()) ReservationService.getInstance().delete((int) reservations.next().getId());
+			Iterator<Reservation> reservations = reservationService.findByVehicle(id).iterator();
+			while(reservations.hasNext()) reservationService.delete((int) reservations.next().getId());
 			preparedStatement.setLong(1, id);
 			return preparedStatement.executeUpdate();
 		} catch (SQLException | ServiceException e) {
@@ -94,6 +95,22 @@ public class VehicleDao {
 		} catch (SQLException e) {
 			 throw new DaoException(e.getMessage());
 		}
+	}
+	
+	public List<Vehicle> findByClientId(long client_id) throws DaoException {
+		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		try (
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(FIND_VEHICLES_BY_CLIENT);
+		) {
+			preparedStatement.setLong(1, client_id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next())
+				vehicles.add(instanceFromResult(resultSet));
+		} catch (SQLException e) {
+			 throw new DaoException(e.getMessage());
+		}
+		return vehicles;
 	}
 
 	public List<Vehicle> findAll() throws DaoException {

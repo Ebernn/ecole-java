@@ -27,11 +27,18 @@
                         <!-- form start -->
                         <form class="form-horizontal" method="post">
                             <div class="box-body">
+                            	<div class="form-group">
+                                    <label for="id" class="col-sm-2 control-label">Identifiant</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="id" name="id" placeholder="Identifiant" required value="${id}" disabled>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="car" class="col-sm-2 control-label">Voiture</label>
 
                                     <div class="col-sm-10">
-                                        <select class="form-control" id="car" name="car">
+                                        <select class="form-control" id="car" name="car" value="${vehicle_id}">
                                             <c:forEach items="${vehicles}" var="vehicle">
                                             	<option value="${vehicle.id}">${vehicle.constructeur} ${vehicle.modele}</option>
                                             </c:forEach>
@@ -42,7 +49,7 @@
                                     <label for="client" class="col-sm-2 control-label">Client</label>
 
                                     <div class="col-sm-10">
-                                        <select class="form-control" id="client" name="client">
+                                        <select class="form-control" id="client" name="client" value="${client_id}">
                                         	<c:forEach items="${users}" var="user">
                                             	<option value="${user.id}">${user.prenom} ${user.nom}</option>
                                             </c:forEach>
@@ -54,7 +61,7 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="begin" name="begin" required
-                                               data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                               data-inputmask="'alias': 'dd/mm/yyyy'" data-mask value="${begin}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -62,13 +69,13 @@
 
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="end" name="end" required
-                                               data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                               data-inputmask="'alias': 'dd/mm/yyyy'" data-mask value="${end}">
                                     </div>
                                 </div>
                             </div>
                             <!-- /.box-body -->
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-info pull-right">Ajouter</button>
+                                <button type="submit" class="btn btn-info pull-right">Modifier</button>
                             </div>
                             <!-- /.box-footer -->
                         </form>

@@ -26,48 +26,54 @@
                     <div class="box">
                         <div class="box-body no-padding">
                             <table class="table table-striped">
-                                <tr>
+                            	<tr>
                                     <th style="width: 10px">#</th>
                                     <th>Nom</th>
                                     <th>Prenom</th>
                                     <th>Email</th>
+                                    <th>Naissance</th>
                                     <th>Action</th>
                                 </tr>
                                 <tr>
-                                    <td>1.</td>
-                                    <td>John</td>
-                                    <td>Doe</td>
-                                    <td>john.doe@epf.fr</td>
+                                
+                            	<c:forEach items="${users}" var="user">
+                            		
+                            		<!-- Modal -->
+									<div class="modal fade" id="supprModal${user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									  <div class="modal-dialog" role="document">
+									    <div class="modal-content">
+									      <div class="modal-header">
+									        <h5 class="modal-title" id="exampleModalLabel">Confirmation de suppression</h5>
+									      </div>
+									      <div class="modal-body">
+									        Es-tu sur de vouloir supprimer l'utilisateur ${user.id}?
+									      </div>
+									      <div class="modal-footer">
+									        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									        <a class="btn btn-primary" href="./users/delete?id=${user.id}">Confirmer</a>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+                            	
+                            		<td>${user.id}</td>
+                                    <td>${user.nom}</td>
+                                    <td>${user.prenom}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.naissance}</td>
                                     <td>
-                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/users/details?id=1">
-                                        <i class="fa fa-play"></i>
+                                        <a class="btn btn-primary" href="./users/details?id=${user.id}">
+                                        	<i class="fa fa-play"></i>
                                         </a>
-                                        <a class="btn btn-success disabled" href="#">
+                                        <a class="btn btn-success" href="./users/edit?id=${user.id}">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger disabled" href="#">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
+                                        <a class="btn btn-danger" data-toggle="modal" data-target="#supprModal${user.id}">
+										  	<i class="fa fa-trash"></i>
+										</a>
                                     </td>
-                                </tr>
-
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Jane</td>
-                                    <td>Doe</td>
-                                    <td>jane.doe@epf.fr</td>
-                                    <td>
-                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/users/details?id=2">
-                                            <i class="fa fa-play"></i>
-                                        </a>
-                                        <a class="btn btn-success disabled" href="#">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-danger disabled" href="#">
-                                            <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                            	</tr>
+                            	</c:forEach>
                             </table>
                         </div>
                         <!-- /.box-body -->

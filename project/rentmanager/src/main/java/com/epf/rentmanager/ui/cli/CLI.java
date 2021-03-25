@@ -3,6 +3,10 @@ package com.epf.rentmanager.ui.cli;
 import java.time.LocalDate;
 import java.util.ListIterator;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.epf.rentmanager.configuration.AppConfiguration;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.model.Reservation;
@@ -13,14 +17,23 @@ import com.epf.rentmanager.service.VehicleService;
 import com.epf.rentmanager.utils.IOUtils;
 
 public class CLI {
-	public static void createClient() {
+	private VehicleService vehicleService;
+	private ClientService clientService;
+	private ReservationService reservationService;
+	
+	private CLI() {
+		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfiguration.class);
+		this.clientService = context.getBean(ClientService.class);
+	}
+	
+	public void createClient() {
 		IOUtils.print(" 🛠 Creation d'un nouveau client...\nVeuillez remplir les champs ci-dessous\n");
 		String nom = IOUtils.readString("Nom:", true);
 		String prenom = IOUtils.readString("Prenom:", true);
 		String email = IOUtils.readString("Email:", true);
 		LocalDate naissance = IOUtils.readDate("Date de naissance:", true);
 		try {
-			ClientService.getInstance().create(new Client(nom, prenom, email, naissance));
+			clientService.create(new Client(nom, prenom, email, naissance));
 			IOUtils.print(" ✔️ Opération réussie");
 		} catch (ServiceException e) {
 			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
@@ -28,10 +41,10 @@ public class CLI {
 		}
 	}
 	
-	public static void getClients() {
+	public void getClients() {
 		IOUtils.print(" 🛠 Récupération de la liste des clients...");
 		try {
-			ListIterator<Client> clients = ClientService.getInstance().findAll().listIterator();
+			ListIterator<Client> clients = clientService.findAll().listIterator();
 			while(clients.hasNext())
 				IOUtils.print(clients.next().toString());
 			IOUtils.print(" ✔️ Opération réussie");
@@ -41,13 +54,13 @@ public class CLI {
 		}
 	}
 	
-	public static void createVehicle() {
+	public void createVehicle() {
 		IOUtils.print(" 🛠 Creation d'un nouveau véhicule...\nVeuillez remplir les champs ci-dessous\n");
 		String constructeur = IOUtils.readString("Constructeur:", true);
 		String modele = IOUtils.readString("Modèle de véhicule:", true);
 		int nb_places = IOUtils.readInt("Nombre de places:");
 		try {
-			VehicleService.getInstance().create(new Vehicle(constructeur, modele, nb_places));
+			vehicleService.create(new Vehicle(constructeur, modele, nb_places));
 			IOUtils.print(" ✔️ Opération réussie");
 		} catch (ServiceException e) {
 			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
@@ -55,10 +68,10 @@ public class CLI {
 		}
 	}
 	
-	public static void getVehicles() {
+	public void getVehicles() {
 		IOUtils.print(" 🛠 Récupération de la liste des véhicules...");
 		try {
-			ListIterator<Vehicle> vehicles = VehicleService.getInstance().findAll().listIterator();
+			ListIterator<Vehicle> vehicles = vehicleService.findAll().listIterator();
 			while(vehicles.hasNext())
 				IOUtils.print(vehicles.next().toString());
 			IOUtils.print(" ✔️ Opération réussie");
@@ -68,14 +81,14 @@ public class CLI {
 		}
 	}
 	
-	public static void createReservation() {
+	public void createReservation() {
 		IOUtils.print(" 🛠 Creation d'une nouvelle réservation...\nVeuillez remplir les champs ci-dessous\n");
 		int clientId = IOUtils.readInt("Identifiant du client:");
 		int vehicleId = IOUtils.readInt("Identifiant du véhicule:");
 		LocalDate debut = IOUtils.readDate("Date de début:", true);
 		LocalDate fin = IOUtils.readDate("Date de fin:", true);
 		try {
-			ReservationService.getInstance().create(new Reservation(clientId, vehicleId, debut, fin));
+			reservationService.create(new Reservation(clientId, vehicleId, debut, fin));
 			IOUtils.print(" ✔️ Opération réussie");
 		} catch (ServiceException e) {
 			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
@@ -83,10 +96,10 @@ public class CLI {
 		}
 	}
 	
-	public static void getReservations() {
+	public void getReservations() {
 		IOUtils.print(" 🛠 Récupération de la liste des réservations...");
 		try {
-			ListIterator<Reservation> reservations = ReservationService.getInstance().findAll().listIterator();
+			ListIterator<Reservation> reservations = reservationService.findAll().listIterator();
 			while(reservations.hasNext())
 				IOUtils.print(reservations.next().toString());
 			IOUtils.print(" ✔️ Opération réussie");
@@ -96,11 +109,11 @@ public class CLI {
 		}
 	}
 	
-	public static void getReservationsByClient() {
+	public void getReservationsByClient() {
 		IOUtils.print(" 🛠 Récupération de la liste des réservations associées à un client...\nVeuillez remplir les champs ci-dessous\n");
 		long clientId = IOUtils.readInt("Identifiant du client:");
 		try {
-			ListIterator<Reservation> reservations = ReservationService.getInstance().findByClient(clientId).listIterator();
+			ListIterator<Reservation> reservations = reservationService.findByClient(clientId).listIterator();
 			while(reservations.hasNext())
 				IOUtils.print(reservations.next().toString());
 			IOUtils.print(" ✔️ Opération réussie");
@@ -110,11 +123,11 @@ public class CLI {
 		}
 	}
 	
-	public static void getReservationsByVehicle() {
+	public void getReservationsByVehicle() {
 		IOUtils.print(" 🛠 Récupération de la liste des réservations associées à un véhicule...\nVeuillez remplir les champs ci-dessous\n");
 		long vehicleId = IOUtils.readInt("Identifiant du véhicule:");
 		try {
-			ListIterator<Reservation> reservations = ReservationService.getInstance().findByVehicle(vehicleId).listIterator();
+			ListIterator<Reservation> reservations = reservationService.findByVehicle(vehicleId).listIterator();
 			while(reservations.hasNext())
 				IOUtils.print(reservations.next().toString());
 			IOUtils.print(" ✔️ Opération réussie");
@@ -124,11 +137,11 @@ public class CLI {
 		}
 	}
 	
-	public static void supprClient() {
+	public void supprClient() {
 		IOUtils.print(" 🛠 Suppression d'un client...\nVeuillez remplir les champs ci-dessous\n");
 		int id = IOUtils.readInt("Identifiant:");
 		try {
-			ClientService.getInstance().delete(id);
+			clientService.delete(id);
 			IOUtils.print(" ✔️ Opération réussie");
 		} catch (ServiceException e) {
 			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
@@ -136,11 +149,11 @@ public class CLI {
 		}
 	}
 	
-	public static void supprVehicle() {
+	public void supprVehicle() {
 		IOUtils.print(" 🛠 Suppression d'un véhicule...\nVeuillez remplir les champs ci-dessous\n");
 		int id = IOUtils.readInt("Identifiant:");
 		try {
-			VehicleService.getInstance().delete(id);
+			vehicleService.delete(id);
 			IOUtils.print(" ✔️ Opération réussie");
 		} catch (ServiceException e) {
 			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());
@@ -148,11 +161,11 @@ public class CLI {
 		}
 	}
 	
-	public static void supprReservation() {
+	public void supprReservation() {
 		IOUtils.print(" 🛠 Suppression d'une réservation...\nVeuillez remplir les champs ci-dessous\n");
 		int id = IOUtils.readInt("Identifiant:");
 		try {
-			ReservationService.getInstance().delete(id);
+			reservationService.delete(id);
 			IOUtils.print(" ✔️ Opération réussie");
 		} catch (ServiceException e) {
 			IOUtils.print(" 😔 Une erreur est survenue\n" + e.getMessage());

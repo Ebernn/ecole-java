@@ -9,23 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.model.Client;
 import com.epf.rentmanager.persistence.ConnectionManager;
 
+@Repository
 public class ClientDao {
 	
-	private static ClientDao instance = null;
 	private ClientDao() {}
-	public static ClientDao getInstance() {
-		if(instance == null)
-			instance = new ClientDao();
-		return instance;
-	}
 	
 	private static final String CREATE_CLIENT_QUERY = "INSERT INTO Client(nom, prenom, email, naissance) VALUES(?, ?, ?, ?);";
+	private static final String EDIT_CLIENT_QUERY = "UPDATE Client SET nom=?, prenom=?, email=?, naissance=? WHERE id=?;";
 	private static final String DELETE_CLIENT_QUERY = "DELETE FROM Client WHERE id=?;";
-	private static final String FIND_CLIENT_QUERY = "SELECT nom, prenom, email, naissance FROM Client WHERE id=?;";
+	private static final String FIND_CLIENT_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client WHERE id=?;";
 	private static final String FIND_CLIENTS_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client;";
 	private static final String FIND_CLIENTS_BY_VEHICLE = "SELECT * FROM Client INNER JOIN Reservation ON Reservation.client_id=Client.id WHERE Reservation.vehicle_id=?;";
 	
@@ -37,6 +35,24 @@ public class ClientDao {
 			preparedStatement.setString(2, client.getPrenom());
 			preparedStatement.setString(3, client.getEmail());
 			preparedStatement.setDate(4, Date.valueOf(client.getNaissance()));			
+			long id = preparedStatement.executeUpdate();
+			preparedStatement.close();
+			connection.close();
+			return id;
+		} catch (SQLException e) {
+			 throw new DaoException(e.getMessage());
+		}
+	}
+	
+	public long update(Client client) throws DaoException {
+		try {
+			Connection connection = ConnectionManager.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(EDIT_CLIENT_QUERY);
+			preparedStatement.setString(1, client.getNom());
+			preparedStatement.setString(2, client.getPrenom());
+			preparedStatement.setString(3, client.getEmail());
+			preparedStatement.setDate(4, Date.valueOf(client.getNaissance()));
+			preparedStatement.setLong(5, client.getId());
 			long id = preparedStatement.executeUpdate();
 			preparedStatement.close();
 			connection.close();
@@ -69,7 +85,7 @@ public class ClientDao {
 				return Optional.ofNullable(instanceFromResult(resultSet));
 			return Optional.empty();
 		} catch (SQLException e) {
-			 throw new DaoException(e.getMessage());
+			throw new DaoException(e.getMessage());
 		}
 	}
 	

@@ -2,27 +2,24 @@ package com.epf.rentmanager.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.epf.rentmanager.exception.DaoException;
 import com.epf.rentmanager.exception.ServiceException;
 import com.epf.rentmanager.model.Vehicle;
 import com.epf.rentmanager.utils.FormatChecker;
 import com.epf.rentmanager.dao.VehicleDao;
 
+@Service
 public class VehicleService {
 
+	@Autowired
 	private VehicleDao vehicleDao;
-	public static VehicleService instance;
 	
-	private VehicleService() {
-		this.vehicleDao = VehicleDao.getInstance();
+	private VehicleService(VehicleDao vehicleDao) {
+		this.vehicleDao = vehicleDao;
 	}
-	
-	public static VehicleService getInstance() {
-		if (instance == null)
-			instance = new VehicleService();
-		return instance;
-	}
-	
 	
 	public long create(Vehicle vehicle) throws ServiceException {
 		try {
@@ -64,6 +61,14 @@ public class VehicleService {
 		}
 	}
 
+	public List<Vehicle> findByClient(long client_id) throws ServiceException {
+		try {
+			return vehicleDao.findByClientId(client_id);
+		} catch (DaoException e) {
+			throw new ServiceException(e.getMessage());
+		}
+	}
+	
 	public List<Vehicle> findAll() throws ServiceException {
 		try {
 			return vehicleDao.findAll();

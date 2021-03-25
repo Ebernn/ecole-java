@@ -11,23 +11,54 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+    	<!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Utilisateurs
+            </h1>
+        </section>
+        
         <!-- Main content -->
         <section class="content">
-
+		<h4>D&eacute;tails de l'utilisateur</h4>
             <div class="row">
                 <div class="col-md-3">
 
                     <!-- Profile Image -->
                     <div class="box box-primary">
                         <div class="box-body box-profile">
-                            <h3 class="profile-username text-center">John Doe (john.doe@epf.fr)</h3>
-
+                        	
+                        	<table class="table table-striped">
+							    <thead>
+							        <tr>
+							            <th colspan="2">R&eacute;sum&eacute; de l'utilisateur</th>
+							        </tr>
+							    </thead>
+							    <tbody>
+							        <tr>
+							            <td>Identifiant</td>
+							            <td>${user.id}</td>
+							        </tr>
+							      	<tr>
+							            <td>Nom complet</td>
+							            <td>${user.prenom} ${user.nom}</td>
+							        </tr>
+							        <tr>
+							            <td>Email</td>
+							            <td>${user.email}</td>
+							        </tr>
+							        <tr>
+							            <td>Date de naissance</td>
+							            <td>${user.naissance}</td>
+							        </tr>
+								 </tbody>
+							</table>
                             <ul class="list-group list-group-unbordered">
                                 <li class="list-group-item">
-                                    <b>Reservation(s)</b> <a class="pull-right">2</a>
+                                    <b>Vehicule(s)</b> <a class="pull-right">${countv}</a>
                                 </li>
                                 <li class="list-group-item">
-                                    <b>Voiture(s)</b> <a class="pull-right">3</a>
+                                    <b>Reservation(s)</b> <a class="pull-right">${countr}</a>
                                 </li>
                             </ul>
                         </div>
@@ -49,21 +80,18 @@
                                         <tr>
                                             <th style="width: 10px">#</th>
                                             <th>Voiture</th>
-                                            <th>Date de debut</th>
-                                            <th>Date de fin</th>
+                                            <th>Debut</th>
+                                            <th>Fin</th>
                                         </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>Renault Megane</td>
-                                            <td>10/01/2018</td>
-                                            <td>12/01/2018</td>
-                                        </tr>
-                                        <tr>
-                                            <td>7.</td>
-                                            <td>Peugeot 207</td>
-                                            <td>10/01/2018</td>
-                                            <td>12/01/2018</td>
-                                        </tr>
+	                                    <tr>
+	
+		                                <c:forEach items="${reservations}" var="reservation">
+		                                    <td>${reservation.id}.</td>
+		                                    <td>${reservation.vehicleId}</td>
+		                                    <td>${reservation.debut}</td>
+		                                    <td>${reservation.fin}</td>
+		                                </tr>
+		                                </c:forEach>
                                     </table>
                                 </div>
                             </div>
@@ -79,23 +107,14 @@
                                             <th style=>Nombre de places</th>
                                         </tr>
                                         <tr>
-                                            <td>1.</td>
-                                            <td>Renault</td>
-                                            <td>Clio</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.</td>
-                                            <td>Peugeot</td>
-                                            <td>206</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td>3.</td>
-                                            <td>Volkswagen</td>
-                                            <td>Touran</td>
-                                            <td>7</td>
-                                        </tr>
+                                        
+                                        <c:forEach items="${vehicles}" var="vehicle">
+		                                    <td>${vehicle.id}.</td>
+		                                    <td>${vehicle.modele}</td>
+		                                    <td>${vehicle.constructeur}</td>
+		                                    <td>${vehicle.nb_places}</td>
+		                                </tr>
+		                                </c:forEach>
                                     </table>
                                 </div>
                             </div>

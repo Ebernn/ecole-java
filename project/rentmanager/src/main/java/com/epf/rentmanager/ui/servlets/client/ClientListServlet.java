@@ -1,7 +1,8 @@
-package com.epf.rentmanager.ui.servlets.vehicle;
+package com.epf.rentmanager.ui.servlets.client;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,18 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.epf.rentmanager.exception.ServiceException;
-import com.epf.rentmanager.service.VehicleService;
+import com.epf.rentmanager.service.ClientService;
 
-@WebServlet("/cars/delete")
-public class VehicleDeleteServlet extends HttpServlet {
+@WebServlet("/users")
+public class ClientListServlet extends HttpServlet {	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4325359811604254645L;
+	private static final long serialVersionUID = -2123408241137935308L;
 	
 	@Autowired
-	private VehicleService vehicleService;
+	private ClientService clientService;
 	
 	@Override
 	public void init() throws ServletException {
@@ -31,12 +31,17 @@ public class VehicleDeleteServlet extends HttpServlet {
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		final RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/users/list.jsp");
 		try {
-			vehicleService.delete(Integer.parseInt(request.getParameter("id").toString()));
-		} catch (NumberFormatException | ServiceException e) {
+			request.setAttribute("users", clientService.findAll());
+		} catch (final Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		response.sendRedirect("../cars");
+		dispatcher.forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 }
