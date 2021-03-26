@@ -27,11 +27,8 @@ public class ReservationService {
 	
 	public long create(Reservation reservation) throws ServiceException {
 		try {
-			if (canRentNdays(reservation.getVehicleId(), maxRentLength - reservation.getDebut().until(reservation.getFin(), ChronoUnit.DAYS))) {
-				return reservationDao.create(reservation);
-			} else {
-				throw new ServiceException("On ne peut pas réserver une même voiture " + maxRentLength + " jours de suite.");
-			}
+			isValid(reservation);
+			return reservationDao.create(reservation);
 		} catch (Exception e) {
 			throw new ServiceException(e.getMessage());
 		}
@@ -39,15 +36,16 @@ public class ReservationService {
 	
 	public long update(Reservation reservation) throws ServiceException {
 		try {
+			isValid(reservation);
 			return reservationDao.update(reservation);
 		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
 	}
 	
-	public long delete(int id) throws ServiceException {
+	public long delete(long l) throws ServiceException {
 		try {
-			return reservationDao.delete(id);
+			return reservationDao.delete(l);
 		} catch (DaoException e) {
 			throw new ServiceException(e.getMessage());
 		}
@@ -85,6 +83,34 @@ public class ReservationService {
 		}
 	}
 	
+	private void isValid(Reservation reservation) throws ServiceException {
+		if(!canRentToday(reservation))
+			throw new ServiceException("On ne peut pas réserver une même voiture deux fois le même jour");
+		if(!canRentLength(reservation))
+			throw new ServiceException("On ne peut pas réserver une même voiture 7 jours de suite par le même utilisateur");
+		if (!canRentNdays(reservation.getVehicleId(), maxRentLength - reservation.getDebut().until(reservation.getFin(), ChronoUnit.DAYS)))
+			throw new ServiceException("On ne peut pas réserver une même voiture " + maxRentLength + " jours de suite.");
+	}
+	
+	private boolean canRentLength(Reservation reservation) {
+		return reservation.getDebut().until(reservation.getFin(), ChronoUnit.DAYS) < 7;
+	}
+	
+	private boolean canRentToday(Reservation reservation) {
+		List<Reservation> reservations;
+		try {
+			reservations = this.findByVehicle(reservation.getVehicleId());
+			for (Reservation ireservation : reservations) {
+	            if (ireservation.getFin().until(reservation.getFin(), ChronoUnit.DAYS) > 0 && reservation.getDebut().until(ireservation.getFin(), ChronoUnit.DAYS) > 0 ||
+	            		reservation.getFin().until(ireservation.getFin(), ChronoUnit.DAYS) > 0 && ireservation.getDebut().until(reservation.getFin(), ChronoUnit.DAYS) > 0) return false;
+	        }
+			return true;
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	private boolean canRentNdays(long vehicleId, long max) {
 		try {
 			List<Reservation> reservations = reservationDao.findResaByVehicleId(vehicleId);
@@ -93,7 +119,7 @@ public class ReservationService {
 			LocalDate prevDate = now;
 			for (Reservation r : reservations) {
 				if (r.getDebut().until(now, ChronoUnit.DAYS) >= max) return false;
-				if (prevDate.until(r.getFin(), ChronoUnit.DAYS) > 0) return true;
+				if (r.getFin().until(prevDate, ChronoUnit.DAYS) > 1) return true;
 				prevDate = r.getDebut();
 	        }
 			return true;

@@ -38,12 +38,12 @@ public class VehicleServiceTest {
 		try {
 			LocalDate now = LocalDate.now();
 			List<Reservation> reservations = (List<Reservation>) Arrays.asList(
-					new Reservation(3, 0, now.minusDays(30L), now.minusDays(25L)),
-					new Reservation(0, 0, now.minusDays(25L), now.minusDays(20L)),
-					new Reservation(2, 0, now.minusDays(20L), now.minusDays(15L)),
-					new Reservation(2, 0, now.minusDays(15L), now.minusDays(10L)),
-					new Reservation(3, 0, now.minusDays(10L), now.minusDays(5L)),
-					new Reservation(1, 0, now.minusDays(5L), now.minusDays(0L))
+					new Reservation(3L, 1L, now.minusDays(30L), now.minusDays(26L)),
+					new Reservation(0L, 1L, now.minusDays(25L), now.minusDays(21L)),
+					new Reservation(2L, 1L, now.minusDays(20L), now.minusDays(16L)),
+					new Reservation(2L, 1L, now.minusDays(15L), now.minusDays(11L)),
+					new Reservation(3L, 1L, now.minusDays(10L), now.minusDays(6L)),
+					new Reservation(1L, 1L, now.minusDays(5L), now.minusDays(0L))
 				);
 			when(this.reservationDao.findResaByVehicleId(1L)).thenReturn(reservations);
 			Assertions.assertThrows(ServiceException.class, () -> reservationService.create(new Reservation(1L, 1L, now, now.plusDays(1L))));
@@ -57,15 +57,15 @@ public class VehicleServiceTest {
 		try {
 			LocalDate now = LocalDate.now();
 			List<Reservation> reservations = (List<Reservation>) Arrays.asList(
-					new Reservation(3, 0, now.minusDays(30L), now.minusDays(25L)),
-					new Reservation(0, 0, now.minusDays(25L), now.minusDays(20L)),
-					new Reservation(2, 0, now.minusDays(21L), now.minusDays(15L)), // 20L -> 21L
-					new Reservation(2, 0, now.minusDays(15L), now.minusDays(10L)),
-					new Reservation(3, 0, now.minusDays(10L), now.minusDays(5L)),
-					new Reservation(1, 0, now.minusDays(5L), now.minusDays(0L))
+					new Reservation(3L, 2L, now.minusDays(30L), now.minusDays(26L)),
+					new Reservation(0L, 2L, now.minusDays(25L), now.minusDays(22L)), // 21L -> 22L
+					new Reservation(2L, 2L, now.minusDays(20L), now.minusDays(16L)),
+					new Reservation(2L, 2L, now.minusDays(15L), now.minusDays(11L)),
+					new Reservation(3L, 2L, now.minusDays(10L), now.minusDays(6L)),
+					new Reservation(1L, 2L, now.minusDays(5L), now.minusDays(0L))
 				);
-			when(this.reservationDao.findResaByVehicleId(1L)).thenReturn(reservations);
-			Assertions.assertDoesNotThrow(() -> reservationService.create(new Reservation(1L, 1L, now, now.plusDays(1L))));
+			when(this.reservationDao.findResaByVehicleId(2L)).thenReturn(reservations);
+			Assertions.assertDoesNotThrow(() -> reservationService.create(new Reservation(2L, 2L, now, now.plusDays(1L))));
 		} catch (DaoException e) {
 			e.printStackTrace();
 		}
