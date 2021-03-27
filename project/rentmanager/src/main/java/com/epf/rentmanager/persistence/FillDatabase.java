@@ -21,6 +21,10 @@ public class FillDatabase {
         }
     }
 
+    /**
+     * Remplie la base de données avec quelques éléments
+     * @throws SQLException
+     */
 	private static void insertWithPreparedStatement() throws SQLException {
         Connection connection = ConnectionManager.getConnection();
         PreparedStatement createPreparedStatement = null;

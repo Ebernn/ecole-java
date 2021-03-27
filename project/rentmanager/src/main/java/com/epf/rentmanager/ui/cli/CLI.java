@@ -26,6 +26,9 @@ public class CLI {
 		this.clientService = context.getBean(ClientService.class);
 	}
 	
+	/**
+	 * Prompt de création d'un client
+	 */
 	public void createClient() {
 		IOUtils.print(" 🛠 Creation d'un nouveau client...\nVeuillez remplir les champs ci-dessous\n");
 		String nom = IOUtils.readString("Nom:", true);
@@ -41,6 +44,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt d'affichage de tous les clients
+	 */
 	public void getClients() {
 		IOUtils.print(" 🛠 Récupération de la liste des clients...");
 		try {
@@ -54,6 +60,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt de création d'un véhicule
+	 */
 	public void createVehicle() {
 		IOUtils.print(" 🛠 Creation d'un nouveau véhicule...\nVeuillez remplir les champs ci-dessous\n");
 		String constructeur = IOUtils.readString("Constructeur:", true);
@@ -68,6 +77,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt d'affichage de tous les véhicules
+	 */
 	public void getVehicles() {
 		IOUtils.print(" 🛠 Récupération de la liste des véhicules...");
 		try {
@@ -81,6 +93,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt de création d'une réservation
+	 */
 	public void createReservation() {
 		IOUtils.print(" 🛠 Creation d'une nouvelle réservation...\nVeuillez remplir les champs ci-dessous\n");
 		int clientId = IOUtils.readInt("Identifiant du client:");
@@ -96,6 +111,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt d'affichage de toutes les réservations
+	 */
 	public void getReservations() {
 		IOUtils.print(" 🛠 Récupération de la liste des réservations...");
 		try {
@@ -109,6 +127,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt d'affichage de toutes les réservations liées à un client
+	 */
 	public void getReservationsByClient() {
 		IOUtils.print(" 🛠 Récupération de la liste des réservations associées à un client...\nVeuillez remplir les champs ci-dessous\n");
 		long clientId = IOUtils.readInt("Identifiant du client:");
@@ -123,6 +144,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt d'affichage de toutes les réservations liées à un véhicule
+	 */
 	public void getReservationsByVehicle() {
 		IOUtils.print(" 🛠 Récupération de la liste des réservations associées à un véhicule...\nVeuillez remplir les champs ci-dessous\n");
 		long vehicleId = IOUtils.readInt("Identifiant du véhicule:");
@@ -137,6 +161,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt de suppression d'un client
+	 */
 	public void supprClient() {
 		IOUtils.print(" 🛠 Suppression d'un client...\nVeuillez remplir les champs ci-dessous\n");
 		int id = IOUtils.readInt("Identifiant:");
@@ -149,6 +176,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt de suppression d'un véhicule
+	 */
 	public void supprVehicle() {
 		IOUtils.print(" 🛠 Suppression d'un véhicule...\nVeuillez remplir les champs ci-dessous\n");
 		int id = IOUtils.readInt("Identifiant:");
@@ -161,6 +191,9 @@ public class CLI {
 		}
 	}
 	
+	/**
+	 * Prompt de suppression d'une réservation
+	 */
 	public void supprReservation() {
 		IOUtils.print(" 🛠 Suppression d'une réservation...\nVeuillez remplir les champs ci-dessous\n");
 		int id = IOUtils.readInt("Identifiant:");

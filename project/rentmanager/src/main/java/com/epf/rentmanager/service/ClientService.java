@@ -1,5 +1,6 @@
 package com.epf.rentmanager.service;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -28,6 +29,12 @@ public class ClientService {
 		this.clientDao = clientDao;
 	}
 	
+	/**
+	 * Créé un client dans la base de données
+	 * @param client
+	 * @return l'identifiant du client
+	 * @throws DaoException
+	 */
 	public long create(Client client) throws ServiceException {
 		try {
 			isValid(client);
@@ -38,6 +45,12 @@ public class ClientService {
 		}
 	}
 	
+	/**
+	 * Met à jour un client dans la base de données
+	 * @param client
+	 * @return l'identifiant du client
+	 * @throws DaoException
+	 */
 	public long update(Client client) throws ServiceException {
 		try {
 			isValid(client);
@@ -48,6 +61,12 @@ public class ClientService {
 		}
 	}
 	
+	/**
+	 * Supprime un client de la base de données
+	 * @param l'identifiant du client
+	 * @return
+	 * @throws DaoException
+	 */
 	public long delete(int id) throws ServiceException {
 		try {
 			// Peut être davantage optimisé
@@ -61,6 +80,12 @@ public class ClientService {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie un client à partir de son identifiant (s'il existe)
+	 * @param l'identifiant du client
+	 * @return client
+	 * @throws DaoException
+	 */
 	public Client findById(long id) throws ServiceException {
 		try {
 			return clientDao.findById(id).get();
@@ -69,6 +94,12 @@ public class ClientService {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie les clients liés à un véhicule
+	 * @param l'identifiant du véhicule
+	 * @return la liste de clients
+	 * @throws DaoException
+	 */
 	public List<Client> findByVehicle(long vehicle_id) throws ServiceException {
 		try {
 			return clientDao.findByVehicleId(vehicle_id);
@@ -77,6 +108,11 @@ public class ClientService {
 		}
 	}
 
+	/**
+	 * Recherche et renvoie tous les clients de la base de données
+	 * @return la liste de clients
+	 * @throws DaoException
+	 */
 	public List<Client> findAll() throws ServiceException {
 		try {
 			return clientDao.findAll();
@@ -85,6 +121,11 @@ public class ClientService {
 		}
 	}
 	
+	/**
+	 * Vérifie le respect des contraintes avant d'insérer le client dans la base de données
+	 * @param client
+	 * @throws ServiceException
+	 */
 	private void isValid(Client client) throws ServiceException {
 		if (FormatChecker.isBlank(client.getNom()) || FormatChecker.isBlank(client.getPrenom()))
 			throw new ServiceException("Nom / prénom vide");
@@ -96,14 +137,29 @@ public class ClientService {
 			throw new ServiceException("Le nom et le prénom de l'utilsateur doivent avoir au moins " + minNameLength + " caractères");
 	}
 	
+	/**
+	 * Vérifie si le client est majeur
+	 * @param client
+	 * @return
+	 */
 	private boolean isMajor(Client client) {
 		return client.getNaissance().until(LocalDate.now(), ChronoUnit.YEARS) >= 18;
 	}
 	
+	/**
+	 * Vérifie si le nom du client respecte les contraintes
+	 * @param client
+	 * @return
+	 */
 	private boolean hasValidName(Client client) {
 		return client.getNom().length() >= minNameLength && client.getPrenom().length() >= minNameLength;
 	}
 	
+	/**
+	 * Vérifie si l'email du client respecte les contraintes
+	 * @param client
+	 * @return
+	 */
 	private boolean hasValidEmail(Client client) {
 		final boolean validFormat = FormatChecker.isValidEmailAddress(client.getEmail());
 		if (!validFormat) return false;

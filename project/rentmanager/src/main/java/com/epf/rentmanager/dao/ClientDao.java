@@ -27,6 +27,12 @@ public class ClientDao {
 	private static final String FIND_CLIENTS_QUERY = "SELECT id, nom, prenom, email, naissance FROM Client;";
 	private static final String FIND_CLIENTS_BY_VEHICLE = "SELECT * FROM Client INNER JOIN Reservation ON Reservation.client_id=Client.id WHERE Reservation.vehicle_id=?;";
 	
+	/**
+	 * Créé un client dans la base de données
+	 * @param client
+	 * @return l'identifiant du client
+	 * @throws DaoException
+	 */
 	public long create(Client client) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
@@ -44,6 +50,12 @@ public class ClientDao {
 		}
 	}
 	
+	/**
+	 * Met à jour un client dans la base de données
+	 * @param client
+	 * @return l'identifiant du client
+	 * @throws DaoException
+	 */
 	public long update(Client client) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
@@ -62,6 +74,12 @@ public class ClientDao {
 		}
 	}
 	
+	/**
+	 * Supprime un client de la base de données
+	 * @param l'identifiant du client
+	 * @return
+	 * @throws DaoException
+	 */
 	public long delete(long id) throws DaoException {
 		try (
 			Connection connection = ConnectionManager.getConnection();
@@ -74,6 +92,12 @@ public class ClientDao {
 		}
 	}
 
+	/**
+	 * Recherche et renvoie un client à partir de son identifiant (s'il existe)
+	 * @param l'identifiant du client
+	 * @return client
+	 * @throws DaoException
+	 */
 	public Optional<Client> findById(long id) throws DaoException {
 		try (
 			Connection connection = ConnectionManager.getConnection();
@@ -89,6 +113,12 @@ public class ClientDao {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie les clients liés à un véhicule
+	 * @param l'identifiant du véhicule
+	 * @return la liste de clients
+	 * @throws DaoException
+	 */
 	public List<Client> findByVehicleId(long vehicle_id) throws DaoException {
 		List<Client> clients = new ArrayList<Client>();
 		try (
@@ -105,6 +135,11 @@ public class ClientDao {
 		return clients;
 	}
 
+	/**
+	 * Recherche et renvoie tous les clients de la base de données
+	 * @return la liste de clients
+	 * @throws DaoException
+	 */
 	public List<Client> findAll() throws DaoException {
 		 List<Client> clients = new ArrayList<Client>();
 		 try (
@@ -120,6 +155,12 @@ public class ClientDao {
 		 return clients;
 	}
 	
+	/**
+	 * Génère une instance de Client à partir du résultat d'une recherche dans la base de données
+	 * @param résultat de la recherche
+	 * @return une instance de Client
+	 * @throws SQLException
+	 */
 	private Client instanceFromResult(ResultSet resultSet) throws SQLException {
 		return new Client(
 			resultSet.getLong("id"),

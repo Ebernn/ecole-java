@@ -27,6 +27,12 @@ public class VehicleService {
 		this.vehicleDao = vehicleDao;
 	}
 	
+	/**
+	 * Créé un véhicule dans la base de données
+	 * @param véhicule
+	 * @return l'identifiant du véhicule
+	 * @throws DaoException
+	 */
 	public long create(Vehicle vehicle) throws ServiceException {
 		try {
 			isValid(vehicle);
@@ -36,6 +42,12 @@ public class VehicleService {
 		}
 	}
 	
+	/**
+	 * Met à jour un véhicule dans la base de données
+	 * @param véhicule
+	 * @return l'identifiant du véhicule
+	 * @throws DaoException
+	 */
 	public long update(Vehicle vehicle) throws ServiceException {
 		try {
 			isValid(vehicle);
@@ -45,6 +57,12 @@ public class VehicleService {
 		}
 	}
 	
+	/**
+	 * Supprime un véhicule de la base de données
+	 * @param l'identifiant du véhicule
+	 * @return
+	 * @throws DaoException
+	 */
 	public long delete(int id) throws ServiceException {
 		try {
 			// Peut être davantage optimisé
@@ -58,6 +76,12 @@ public class VehicleService {
 		}
 	}
 
+	/**
+	 * Recherche et renvoie un véhicule à partir de son identifiant (s'il existe)
+	 * @param l'identifiant du véhicule
+	 * @return client
+	 * @throws DaoException
+	 */
 	public Vehicle findById(long id) throws ServiceException {
 		try {
 			return vehicleDao.findById(id).get();
@@ -66,6 +90,12 @@ public class VehicleService {
 		}
 	}
 
+	/**
+	 * Recherche et renvoie les véhicules liés à un client
+	 * @param l'identifiant du client
+	 * @return la liste des véhicules
+	 * @throws DaoException
+	 */
 	public List<Vehicle> findByClient(long client_id) throws ServiceException {
 		try {
 			return vehicleDao.findByClientId(client_id);
@@ -74,6 +104,11 @@ public class VehicleService {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie tous les véhicules de la base de données
+	 * @return la liste des véhicules
+	 * @throws DaoException
+	 */
 	public List<Vehicle> findAll() throws ServiceException {
 		try {
 			return vehicleDao.findAll();
@@ -82,6 +117,11 @@ public class VehicleService {
 		}
 	}
 	
+	/**
+	 * Compte le nombre de véhicules dans la base de données
+	 * @return le nombre de véhicules dans la base de données
+	 * @throws DaoException
+	 */
 	public int count() throws ServiceException {
 		try {
 			return vehicleDao.count();
@@ -90,6 +130,11 @@ public class VehicleService {
 		}
 	}
 	
+	/**
+	 * Vérifie le respect des contraintes avant d'insérer le véhicule dans la base de données
+	 * @param véhicule
+	 * @throws ServiceException
+	 */
 	private void isValid(Vehicle vehicle) throws ServiceException {
 		if (FormatChecker.isBlank(vehicle.getConstructeur()))
 			throw new ServiceException("Le constructeur est vide");

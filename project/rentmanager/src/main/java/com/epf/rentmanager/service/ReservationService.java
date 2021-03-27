@@ -25,6 +25,12 @@ public class ReservationService {
 		this.reservationDao = reservationDao;
 	}
 	
+	/**
+	 * Créé une réservation dans la base de données
+	 * @param reservation
+	 * @return l'identifiant de la réservation
+	 * @throws DaoException
+	 */
 	public long create(Reservation reservation) throws ServiceException {
 		try {
 			isValid(reservation);
@@ -34,6 +40,12 @@ public class ReservationService {
 		}
 	}
 	
+	/**
+	 * Met à jour une réservation dans la base de données
+	 * @param reservation
+	 * @return l'identifiant de la réservation
+	 * @throws DaoException
+	 */
 	public long update(Reservation reservation) throws ServiceException {
 		try {
 			isValid(reservation);
@@ -43,6 +55,12 @@ public class ReservationService {
 		}
 	}
 	
+	/**
+	 * Suppression d'une réservation à partir de son identifiant
+	 * @param l'identifiant de la réservation
+	 * @return
+	 * @throws DaoException
+	 */
 	public long delete(long l) throws ServiceException {
 		try {
 			return reservationDao.delete(l);
@@ -51,6 +69,12 @@ public class ReservationService {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie une réservation à partir de son identifiant (si elle existe)
+	 * @param l'identifiant de la réservation
+	 * @return réservation
+	 * @throws DaoException
+	 */
 	public Reservation findById(long id) throws ServiceException {
 		try {
 			return reservationDao.findById(id).get();
@@ -59,6 +83,12 @@ public class ReservationService {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie l'ensemble des réservations liées à un client
+	 * @param l'identifiant du client
+	 * @return la liste des réservations
+	 * @throws DaoException
+	 */
 	public List<Reservation> findByClient(long clientId) throws ServiceException {
 		try {
 			return reservationDao.findResaByClientId(clientId);
@@ -67,6 +97,12 @@ public class ReservationService {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie l'ensemble des réservations liées à un véhicule
+	 * @param l'identifiant du véhicule
+	 * @return la liste des réservations
+	 * @throws DaoException
+	 */
 	public List<Reservation> findByVehicle(long vehicleId) throws ServiceException {
 		try {
 			return reservationDao.findResaByVehicleId(vehicleId);
@@ -75,6 +111,11 @@ public class ReservationService {
 		}
 	}
 
+	/**
+	 * Recherche et renvoie toutes les réservations de la base de données
+	 * @return la liste des réservations
+	 * @throws DaoException
+	 */
 	public List<Reservation> findAll() throws ServiceException {
 		try {
 			return reservationDao.findAll();
@@ -83,6 +124,11 @@ public class ReservationService {
 		}
 	}
 	
+	/**
+	 * Vérifie le respect des contraintes avant d'insérer la reservation dans la base de données
+	 * @param reservation
+	 * @throws ServiceException
+	 */
 	private void isValid(Reservation reservation) throws ServiceException {
 		if(!canRentToday(reservation))
 			throw new ServiceException("On ne peut pas réserver une même voiture deux fois le même jour");
@@ -92,10 +138,20 @@ public class ReservationService {
 			throw new ServiceException("On ne peut pas réserver une même voiture " + maxRentLength + " jours de suite.");
 	}
 	
+	/**
+	 * Un même client ne peut pas réserver une voiture pour plus de 7 jours
+	 * @param reservation
+	 * @return
+	 */
 	private boolean canRentLength(Reservation reservation) {
 		return reservation.getDebut().until(reservation.getFin(), ChronoUnit.DAYS) < 7;
 	}
 	
+	/**
+	 * Une même voiture ne peut être réservée deux fois dans la même journée
+	 * @param reservation
+	 * @return
+	 */
 	private boolean canRentToday(Reservation reservation) {
 		List<Reservation> reservations;
 		try {
@@ -111,6 +167,12 @@ public class ReservationService {
 		}
 	}
 	
+	/**
+	 * Un véhicule ne peut être réservée pour plus de X jours consécutifs
+	 * @param l'identifiant du véhicule
+	 * @param X
+	 * @return
+	 */
 	private boolean canRentNdays(long vehicleId, long max) {
 		try {
 			List<Reservation> reservations = reservationDao.findResaByVehicleId(vehicleId);

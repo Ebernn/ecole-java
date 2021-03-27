@@ -27,7 +27,13 @@ public class ReservationDao {
 	private static final String FIND_RESERVATIONS_BY_CLIENT_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation WHERE client_id=?;";
 	private static final String FIND_RESERVATIONS_BY_VEHICLE_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation WHERE vehicle_id=?;";
 	private static final String FIND_RESERVATIONS_QUERY = "SELECT id, client_id, vehicle_id, debut, fin FROM Reservation;";
-		
+	
+	/**
+	 * Créé une réservation dans la base de données
+	 * @param reservation
+	 * @return l'identifiant de la réservation
+	 * @throws DaoException
+	 */
 	public long create(Reservation reservation) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
@@ -45,6 +51,12 @@ public class ReservationDao {
 		}
 	}
 	
+	/**
+	 * Met à jour une réservation dans la base de données
+	 * @param reservation
+	 * @return l'identifiant de la réservation
+	 * @throws DaoException
+	 */
 	public long update(Reservation reservation) throws DaoException {
 		try {
 			Connection connection = ConnectionManager.getConnection();
@@ -63,6 +75,12 @@ public class ReservationDao {
 		}
 	}
 	
+	/**
+	 * Suppression d'une réservation à partir de son identifiant
+	 * @param l'identifiant de la réservation
+	 * @return
+	 * @throws DaoException
+	 */
 	public long delete(long id) throws DaoException {
 		try (
 			Connection connection = ConnectionManager.getConnection();
@@ -75,6 +93,12 @@ public class ReservationDao {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie une réservation à partir de son identifiant (si elle existe)
+	 * @param l'identifiant de la réservation
+	 * @return réservation
+	 * @throws DaoException
+	 */
 	public Optional<Reservation> findById(long id) throws DaoException {
 		try (
 			Connection connection = ConnectionManager.getConnection();
@@ -90,6 +114,12 @@ public class ReservationDao {
 		}
 	}
 	
+	/**
+	 * Recherche et renvoie l'ensemble des réservations liées à un client
+	 * @param l'identifiant du client
+	 * @return la liste des réservations
+	 * @throws DaoException
+	 */
 	public List<Reservation> findResaByClientId(long clientId) throws DaoException {
 		List<Reservation> reservations = new ArrayList<Reservation>();
 		try {
@@ -107,6 +137,12 @@ public class ReservationDao {
 		return reservations;
 	}
 	
+	/**
+	 * Recherche et renvoie l'ensemble des réservations liées à un véhicule
+	 * @param l'identifiant du véhicule
+	 * @return la liste des réservations
+	 * @throws DaoException
+	 */
 	public List<Reservation> findResaByVehicleId(long vehicleId) throws DaoException {
 		List<Reservation> reservations = new ArrayList<Reservation>();
 		try {
@@ -124,6 +160,11 @@ public class ReservationDao {
 		return reservations;
 	}
 
+	/**
+	 * Recherche et renvoie toutes les réservations de la base de données
+	 * @return la liste des réservations
+	 * @throws DaoException
+	 */
 	public List<Reservation> findAll() throws DaoException {
 		List<Reservation> reservations = new ArrayList<Reservation>();
 		try (
@@ -139,6 +180,12 @@ public class ReservationDao {
 		return reservations;
 	}
 	
+	/**
+	 * Génère une instance de Reservation à partir du résultat d'une recherche dans la base de données
+	 * @param résultat de la recherche
+	 * @return une instance de Reservation
+	 * @throws SQLException
+	 */
 	private Reservation instanceFromResult(ResultSet resultSet) throws SQLException {
 		return new Reservation(
 			resultSet.getLong("id"),

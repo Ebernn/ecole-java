@@ -12,6 +12,9 @@ public class ConnectionManager {
 
 	private static JdbcDataSource datasource = null;
 
+	/**
+	 * Initialisation de la connexion
+	 */
 	private static void init() {
 		if (datasource == null) {
 			datasource = new JdbcDataSource();
